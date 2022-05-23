@@ -1,3 +1,17 @@
 body {
-    background-color: blue;
+    background-color: white;
 }
+
+// customize some Bootstrap variables
+$primary: #373737;
+$secondary: #000000;
+$danger: #D9345D;
+$success: #81FF63;
+$light: #FFF8F9;
+
+.nav-link {
+    color: $light;
+}
+
+// the ~ allows you to reference things in node_modules
+@import "~bootstrap/scss/bootstrap";
