@@ -9,9 +9,5 @@ $danger: #D9345D;
 $success: #81FF63;
 $light: #FFF8F9;
 
-.nav-link {
-    color: $light;
-}
-
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
