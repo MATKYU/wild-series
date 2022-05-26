@@ -10,6 +10,6 @@ import './styles/app.scss';
 
 // start the Stimulus application
 import './bootstrap';
-
+require('bootstrap');
 // Message test à supprimer !
 console.log('Hello Webpack Encore !');

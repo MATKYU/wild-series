@@ -14,7 +14,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         ['title' => 'Your Name', 'synopsis' => 'Mitsuha, adolescente coincée dans une famille traditionnelle, rêve de quitter ses montagnes natales pour découvrir la vie trépidante de Tokyo.', 'category' => 'Animation'],
         ['title' => 'Silent Hill: Revelation', 'synopsis' => 'Arrivée à la veille de ses 18 ans, en proie à de terrifiants cauchemars, Heather doit faire face à la disparition soudaine de son père. Elle va découvrir qu\'elle n\'est pas celle qu\'elle croyait être.', 'category' => 'Horreur'],
         ['title' => 'Teen wolf', 'synopsis' => 'Transformé en loup-garou après avoir été mordu par un animal, un lycéen devient un sportif adulé et un bourreau des coeurs qui doit faire face à de nouveaux problèmes.', 'category' => 'Aventure'],
-        ['title' => 'stranger things', 'synopsis' => 'En 1983, à Hawkins dans l\'Indiana, Will Byers disparaît de son domicile. Ses amis se lancent alors dans une recherche semée d\'embûches pour le retrouver. Pendant leur quête de réponses, les garçons rencontrent une étrange jeune fille en fuite.', 'category' => 'Fantastique'],
+        ['title' => 'Stranger things', 'synopsis' => 'En 1983, à Hawkins dans l\'Indiana, Will Byers disparaît de son domicile. Ses amis se lancent alors dans une recherche semée d\'embûches pour le retrouver. Pendant leur quête de réponses, les garçons rencontrent une étrange jeune fille en fuite.', 'category' => 'Fantastique'],
     ];
 
     public function load(ObjectManager $manager)
@@ -24,6 +24,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
             $program->setTitle($serie['title']);
             $program->setSynopsis($serie['synopsis']);
             $program->setCategory($this->getReference('category_' . $serie['category']));
+            $this->addReference('program_' . $serie['title'], $program);
             $manager->persist($program);
         }
         $manager->flush();
