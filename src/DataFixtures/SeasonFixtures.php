@@ -6,29 +6,33 @@ use App\Entity\Season;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 class SeasonFixtures extends Fixture implements DependentFixtureInterface
 {
-    public const SEASONS = [
-        ['number' => 1, 'year' => 2016, 'description' => 'En 1983, à Hawkins dans l\'Indiana, Will Byers disparaît de son domicile. Ses amis se lancent alors dans une recherche semée d\'embûches pour le retrouver. Pendant leur quête de réponses, les garçons rencontrent une étrange jeune fille en fuite.', 'program' => 'Stranger things',],
-        ['number' => 2, 'year' => 2017, 'description' => 'En 1984, à Hawkins dans l\’Indiana, un an a passé depuis l\'attaque du Démogorgon et la disparition d\'Onze. Will Byers a des visions du Monde à l\'envers et de son maître, une créature gigantesque et tentaculaire. Plusieurs signes indiquent que les monstres vont franchir le portail et revenir sur la ville.', 'program' => 'Stranger things',],
-        ['number' => 3, 'year' => 2019, 'description' => 'En 1983, à Hawkins dans l\'Indiana, Will Byers disparaît de son domicile. Ses amis se lancent alors dans une recherche semée d\'embûches pour le retrouver. Pendant leur quête de réponses, les garçons rencontrent une étrange jeune fille en fuite.', 'program' => 'Stranger things',]
-    ];
+
+    public const MAX_SEASON = 5;
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::SEASONS as $seasonFixture) {
-            $season = new Season();
-            $season->setNumber($seasonFixture['number']);
-            $season->setYear($seasonFixture['year']);
-            $season->setDescription($seasonFixture['description']);
-            $season->setProgram($this->getReference('program_' . $seasonFixture['program']));
-            $this->addReference('season_' . 'S' . $seasonFixture['number'], $season);
-            $manager->persist($season);
+        $faker = Factory::create();
+        
+        for ($i = 0; $i < count(ProgramFixtures::SERIES); $i++) {
+            for ($j = 1; $j <= self::MAX_SEASON; $j++) {
+                $season = new Season();
+
+                $season->setNumber($j);
+                $season->setYear(2000 + $j);
+                $season->setDescription($faker->paragraphs(3, true));
+
+                $season->setProgram($this->getReference('program_' . $i));
+
+                $this->addReference('season_' . $i . '_' . $j, $season);
+                $manager->persist($season);
+            }
         }
         $manager->flush();
     }
-
     public function getDependencies()
     {
         // Tu retournes ici toutes les classes de fixtures dont ProgramFixtures dépend
