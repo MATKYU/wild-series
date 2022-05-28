@@ -18,7 +18,7 @@ class ProgramType extends AbstractType
             ->add('synopsis', TextType::class, ['label' => 'Résumé',
             ])
             ->add('poster', TextType::class, ['required' => false])
-            ->add('category', TextType::class, ['label' => 'Categorie',
+            ->add('category', null, ['choice_label' => 'name',
             ])
         ;
     }
