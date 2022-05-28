@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<main>
+		<h1> Nouvelle série </h1>
+		<div>
+			{{ form_start(form) }}
+			{{ form_row(form.title) }}
+			{{ form_row(form.synopsis) }}
+			{{ form_row(form.poster) }}
+			{{ form_row(form.category) }}
+			<button type="submit"> Ajouter </button>
+			{{ form_end(form) }}
+		</div>
+	</main>
+{% endblock %}
