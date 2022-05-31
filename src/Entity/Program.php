@@ -11,13 +11,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
 #[UniqueEntity('title', message: 'Ce titre existe déjà')]
-#[Assert\EnableAutoMapping]
 class Program
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Assert\NotBlank]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
