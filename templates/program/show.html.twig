@@ -16,6 +16,10 @@
 				<a href="{{ path('program_season_show', {'programId': program.id, 'seasonId': season.id}) }}">Saison
 					{{ season.number }}</a>
 			{% endfor %}
+
+			{% for actor in program.actors %}
+			<a href="{{ path('actor_show', {id: actor.id}) }}"> {{actor.name}} </a>
+			{% endfor %}
 		</div>
 	</div>
 	<div>
