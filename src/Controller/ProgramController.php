@@ -15,7 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\Request;
-
+use App\Service\Slugify;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 #[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
@@ -31,13 +32,15 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
-    public function new(Request $request, ProgramRepository $programRepository): Response
+    public function new(Request $request, ProgramRepository $programRepository, Slugify $slugify): Response
     {
         $program = new Program();
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $slug = $slugify->generate($program->getTitle());
+            $program->setSlug($slug);
             $programRepository->add($program, true);
             // Redirect to categories list
             return $this->redirectToRoute('program_index');
@@ -48,7 +51,7 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/show/{id}', requirements: ['id' => '\d+'], methods: ['GET'], name: 'show')]
+    #[Route('/show/{slug}', methods: ['GET'], name: 'show')]
     public function show(Program $program): Response
     {
         $seasons = $program->getSeasons();
@@ -74,10 +77,10 @@ class ProgramController extends AbstractController
          ]);
     }
 
-    #[Route('/{programId<\d+>}/season/{seasonId<\d+>}/episode/{episodeId<\d+>}', methods: ['GET'], name: 'episode_show')]
-    #[Entity('program', options: ['id' => 'programId'])]
+    #[Route('/{program}/season/{seasonId<\d+>}/episode/{episode}', methods: ['GET'], name: 'episode_show')]
     #[Entity('season', options: ['id' => 'seasonId'])]
-    #[Entity('episode', options: ['id' => 'episodeId'])]
+    #[ParamConverter('program', options:['mapping' => ['program' => 'slug']])]
+    #[ParamConverter('episode', options:['mapping' => ['episode' => 'slug']])]
     public function showEpisode(Program $program, Season $season, Episode $episode) 
     {
         return $this->render('program/episode_show.html.twig', [
